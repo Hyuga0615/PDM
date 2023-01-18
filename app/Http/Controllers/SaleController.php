@@ -7,8 +7,18 @@ use App\Models\Sale;
 
 class SaleController extends Controller
 {
-    public function index(Sale $sale)
+    public function index()
     {
-        return $sale->get();
+        return view('/sales/index');
+    }
+    
+    public function home()
+    {
+        return view('/sales/home');
+    }
+    
+    public function sell()
+    {
+        return view('/sales/sell');
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SaleController; 
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +16,20 @@ use App\Http\Controllers\SaleController;
 |
 */
 
-Route::get('/sales',[SaleController::class, 'index']);
+Route::get('/', [SaleController::class, 'index'])->name('index');
+Route::get('/sales/home', [SaleController::class, 'home'])->name('home');
+Route::get('/sales/sell', [SaleController::class, 'sell'])->name('sell');
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+
