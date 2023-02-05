@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [SaleController::class, 'index'])->name('index');
 Route::get('/sales/home', [SaleController::class, 'home'])->name('home');
 Route::get('/sales/sell', [SaleController::class, 'sell'])->name('sell');
+Route::post('/sales/sell', [SaleController::class, 'upload'])->name('upload');
+
 
 
 Route::get('/dashboard', function () {
