@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\Product;
 use Cloudinary;
+use Illuminate\Support\Facades\Auth;
+use Stripe\Stripe;
+use Stripe\Customer;
+use Stripe\Charge;
 
 class SaleController extends Controller
 {
@@ -16,7 +20,7 @@ class SaleController extends Controller
     
     public function home(Product $product)
     {
-        return view('/sales/home')->with(['products'=>$product->get()]);
+        return view('/sales/home')->with(['products'=>$product->getPaginateByLimit(5)]);
     }
     
     public function sell()
@@ -26,10 +30,10 @@ class SaleController extends Controller
     
     public function upload(Request $request , Product $product)
     {
-        $input = $request['post'];
+        
         $image = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
-        $input += ['image' => $image];  
-        $product->image=$request->image;
+        $product->image=$image;
+        
         $product->name_item=$request->name_item; //$product->name_item(カラム)=$request->name_item(blade);
         $product->category=$request->category;
         $product->price=$request->price;
@@ -37,4 +41,41 @@ class SaleController extends Controller
         $product->save();
         return redirect()->route('home');
     }
+    
+    public function show(Product $product)
+    {
+        return view('/sales/show')->with(['product'=>$product]);
+        //'sale'はbladeで使う変数。$peoductはid=1のインスタンス。
+    }
+    
+    public function payment(Request $request)
+    {
+        try
+        {
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            $customer = Customer::create(array(
+                'email' => $request->stripeEmail,
+                'source' => $request->stripeToken
+            ));
+
+            $charge = Charge::create(array(
+                'customer' => $customer->id,
+                'amount' => 1000,
+                'currency' => 'jpy'
+            ));
+
+            return redirect()->route('complete');
+        }
+        catch(Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    public function complete()
+    {
+        return view('complete');
+    }
+    
 }
