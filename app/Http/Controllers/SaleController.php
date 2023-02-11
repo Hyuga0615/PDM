@@ -60,12 +60,12 @@ class SaleController extends Controller
             ));
 
             $charge = Charge::create(array(
-                'customer' => $customer->id,
-                'amount' => 1000,
+                'customer' => $user->id,
+                'amount' => $product->price,
                 'currency' => 'jpy'
             ));
 
-            return redirect()->route('complete');
+            return redirect()->route('/sales/complete');
         }
         catch(Exception $e)
         {
@@ -75,7 +75,7 @@ class SaleController extends Controller
 
     public function complete()
     {
-        return view('complete');
+        return view('/sales/complete');
     }
     
 }
