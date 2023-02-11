@@ -5,6 +5,7 @@ use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,8 +21,9 @@ Route::get('/', [SaleController::class, 'index'])->name('index');
 Route::get('/sales/home', [SaleController::class, 'home'])->name('home');
 Route::get('/sales/sell', [SaleController::class, 'sell'])->name('sell');
 Route::post('/sales/sell', [SaleController::class, 'upload'])->name('upload');
-
-
+Route::get('/sales/{product}', [SaleController::class, 'show'])->name('show');
+Route::post('/sales/payment', [SaleController::class, 'payment'])->name('payment');
+Route::get('/sales/complete', [SaleController::class, 'complete'])->name('complete');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
