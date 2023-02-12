@@ -22,7 +22,7 @@ Route::get('/sales/home', [SaleController::class, 'home'])->name('home');
 Route::get('/sales/sell', [SaleController::class, 'sell'])->name('sell');
 Route::post('/sales/sell', [SaleController::class, 'upload'])->name('upload');
 Route::get('/sales/{product}', [SaleController::class, 'show'])->name('show');
-Route::post('/sales/payment', [SaleController::class, 'payment'])->name('payment');
+Route::post('/sales/{product}/payment', [SaleController::class, 'payment'])->name('payment');
 Route::get('/sales/complete', [SaleController::class, 'complete'])->name('complete');
 
 Route::get('/dashboard', function () {

@@ -22,7 +22,7 @@
                 <p>{{ $product->description }}</p><br>
             </div>
             
-            <form action="{{ asset('payment') }}" method="POST" class="text-center mt-6">
+            <form action="/sales/{{ $product->id }}/payment" method="POST" class="text-center mt-6">
             @csrf
                 <script
                     src="https://checkout.stripe.com/checkout.js" class="stripe-button"

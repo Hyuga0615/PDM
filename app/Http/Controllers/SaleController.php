@@ -48,7 +48,7 @@ class SaleController extends Controller
         //'sale'はbladeで使う変数。$peoductはid=1のインスタンス。
     }
     
-    public function payment(Request $request)
+    public function payment(Request $request, Product $product)
     {
         try
         {
@@ -60,7 +60,7 @@ class SaleController extends Controller
             ));
 
             $charge = Charge::create(array(
-                'customer' => $user->id,
+                'customer' => Auth::user()->id,
                 'amount' => $product->price,
                 'currency' => 'jpy'
             ));
